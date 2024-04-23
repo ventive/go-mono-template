@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  nats:
+    image: nats:latest
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
+  adder:
+    depends_on:
+      - nats
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+      args:
+        GO_SERVICE: adder
+    volumes:
+      - ./:/build
+    image: ventive/adder:local
+    restart: always
+  subtractor:
+    depends_on:
+      - nats
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+      args:
+        GO_SERVICE: subtractor
+    volumes:
+      - ./:/build
+    image: ventive/subtractor:local
+    restart: always
