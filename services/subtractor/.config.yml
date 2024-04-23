@@ -1,0 +1,26 @@
+logger:
+  level: debug
+  format: json
+  source: "subtractor"
+
+app:
+  env: local
+
+  queues:
+    publish:
+      default: "ventive.service.subtractor.outbox.default"
+      errors: "ventive.service.subtractor.outbox.errors"
+    subscribe:
+      queue: "ventive.service.subtractor.inbox"
+      group: "subtractor"
+
+  nats:
+    url: nats://nats:4222
+    name: subtractor
+    user: ""
+    pass: ""
+    tls:
+      enabled: false
+      cert: ""
+      key: ""
+      ca: ""

@@ -1,0 +1,26 @@
+logger:
+  level: debug
+  format: json
+  source: "adder"
+
+app:
+  env: local
+
+  queues:
+    publish:
+      default: "ventive.service.adder.outbox.default"
+      errors: "ventive.service.adder.outbox.errors"
+    subscribe:
+      queue: "ventive.service.adder.inbox"
+      group: "adder"
+
+  nats:
+    url: nats://nats:4222
+    name: adder
+    user: ""
+    pass: ""
+    tls:
+      enabled: false
+      cert: ""
+      key: ""
+      ca: ""

@@ -59,8 +59,6 @@ jobs:
     needs: [lint]
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y libmagic-dev poppler-utils qpdf
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
