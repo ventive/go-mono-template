@@ -1,0 +1,3 @@
+field1: fixture-field-1
+nested:
+  field1: fixture-nested-field-1
