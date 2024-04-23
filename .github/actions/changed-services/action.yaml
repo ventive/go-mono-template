@@ -1,0 +1,21 @@
+name: 'changed-services-action'
+description: 'Get list of changed services that needs rebuild'
+author: "Darius Cupsa <darius.cupsa@around25.com>"
+
+inputs:
+  changed-files:
+    description: "List of changed files. Output of `tj-actions/changed-files@v42`"
+    required: true
+  base-repository:
+    description: "Base repository for the go dependencies"
+    required: true
+
+outputs:
+  services:
+    description: "List of changed services that need rebuilding"
+  services_count:
+    description: "Count of services that need changing"
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+

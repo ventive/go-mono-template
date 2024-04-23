@@ -1,0 +1,5 @@
+name: 'Go Dependency Submission'
+description: 'Calculates dependencies for a Go build-target and submits the list to the Dependency Submission API'
+runs:
+  using: 'node20'
+  main: 'src/index.js'

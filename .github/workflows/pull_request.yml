@@ -1,0 +1,82 @@
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Pull Request CI pipeline
+
+on:
+  pull_request:
+
+jobs:
+  changed-services:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.changed-services.outputs.services }}
+      services_count: ${{ steps.changed-services.outputs.services_count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
+      - run: go mod tidy
+      - uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          json: true
+          escape_json: false
+      - name: Get changed services that should rebuild
+        id: changed-services
+        uses: ./.github/actions/changed-services
+        with:
+          changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+          base-repository: ventive/go-mono-template
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@3cfe3a4abbb849e10058ce4af15d205b6da42804
+        with:
+          # Require: The version of golangci-lint to use.
+          # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
+          # When `install-mode` is `goinstall` the value can be v1.2.3, `latest`, or the hash of a commit.
+          version: v1.55.2
+          args: --timeout=30m
+          skip-cache: true
+
+  test:
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y libmagic-dev poppler-utils qpdf
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+      - name: Test
+        uses: robherley/go-test-action@v0.4.1
+
+  vulncheck:
+    needs: [test, changed-services]
+    if: needs.changed-services.outputs.services_count != 0
+    strategy:
+      fail-fast: false
+      matrix:
+        service: ${{ fromJSON(needs.changed-services.outputs.services) }}
+    uses: ./.github/workflows/govulncheck.yml
+    with:
+      workspace: ${{ matrix.service }}
+    secrets: inherit
