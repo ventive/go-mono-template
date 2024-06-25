@@ -51,7 +51,7 @@ jobs:
 
       - name: Build and push Docker image
         if: steps.check_files.outputs.files_exists == 'false'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./
           file: ./Dockerfile
@@ -62,7 +62,7 @@ jobs:
 
       - name: Build and push Docker image with overwrite Dockerfile
         if: steps.check_files.outputs.files_exists == 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./
           file: ./services/${{ inputs.workspace }}/Dockerfile
