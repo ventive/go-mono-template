@@ -21,7 +21,7 @@ jobs:
         with:
           go-version: 1.22
       - run: go mod tidy
-      - uses: actions/setup-node@v4.0.2
+      - uses: actions/setup-node@v4.0.3
         with:
           node-version: 20
       - name: Get changed files
