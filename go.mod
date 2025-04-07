@@ -1,12 +1,13 @@
 module github.com/ventive/go-mono-template
 
 go 1.24.1
+
 require (
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/goccy/go-reflect v1.2.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nats-io/nats-server/v2 v2.11.0
-	github.com/nats-io/nats.go v1.40.1
+	github.com/nats-io/nats.go v1.41.0
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
