@@ -3,6 +3,8 @@
 # You can also reference a tag or branch, but the action may change without warning.
 
 name: Pull Request CI pipeline
+permissions:
+  contents: read
 
 on:
   pull_request:
