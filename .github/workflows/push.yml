@@ -3,6 +3,8 @@
 # You can also reference a tag or branch, but the action may change without warning.
 
 name: Push CI Pipeline
+permissions:
+  contents: read
 
 on:
   push:
