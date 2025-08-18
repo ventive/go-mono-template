@@ -5,6 +5,7 @@
 name: Push CI Pipeline
 permissions:
   contents: read
+  packages: write
 
 on:
   push:
