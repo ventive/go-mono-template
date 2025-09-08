@@ -17,6 +17,6 @@ jobs:
       - id: govulncheck
         uses: golang/govulncheck-action@b625fbe08f3bccbe446d94fbf87fcc875a4f50ee
         with:
-          go-version-input: 1.24
+          go-version-input: 1.25
           go-package: ./...
           work-dir: services/${{ inputs.workspace }}/app/v1
